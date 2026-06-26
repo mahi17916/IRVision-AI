@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IRVision AI | Satellite Intelligence</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            overflow: hidden;
+            color: white;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(35, 145, 255, 0.20), transparent 30%),
+                radial-gradient(circle at 80% 70%, rgba(42, 218, 157, 0.15), transparent 30%),
+                linear-gradient(135deg, #03152e, #082d58, #020b1a);
+        }
+
+        .stars {
+            position: fixed;
+            inset: 0;
+            opacity: 0.35;
+            background-image:
+                radial-gradient(white 1px, transparent 1px),
+                radial-gradient(white 1px, transparent 1px);
+            background-size: 45px 45px, 70px 70px;
+            background-position: 0 0, 25px 35px;
+            pointer-events: none;
+        }
+
+        .navbar {
+            position: relative;
+            z-index: 2;
+            padding: 24px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .logo span {
+            color: #44d7a8;
+        }
+
+        .nav-text {
+            color: #c6dcf2;
+            font-size: 14px;
+        }
+
+        .hero {
+            position: relative;
+            z-index: 2;
+            min-height: calc(100vh - 95px);
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            align-items: center;
+            gap: 45px;
+            padding: 25px 10%;
+        }
+
+        .hero-left h1 {
+            font-size: 54px;
+            line-height: 1.12;
+            margin-bottom: 18px;
+        }
+
+        .hero-left h1 span {
+            color: #44d7a8;
+        }
+
+        .hero-left p {
+            max-width: 560px;
+            color: #c8d9eb;
+            line-height: 1.7;
+            font-size: 17px;
+            margin-bottom: 30px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            text-decoration: none;
+            padding: 14px 25px;
+            border-radius: 9px;
+            font-weight: bold;
+            transition: 0.25s;
+        }
+
+        .primary-btn {
+            color: #03152e;
+            background: #49d8aa;
+        }
+
+        .primary-btn:hover {
+            transform: translateY(-3px);
+            background: #8bf0cc;
+        }
+
+        .secondary-btn {
+            color: white;
+            border: 1px solid #69bce9;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .secondary-btn:hover {
+            background: rgba(255, 255, 255, 0.18);
+        }
+
+        .hero-right {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .satellite-card {
+            width: 420px;
+            height: 420px;
+            position: relative;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                radial-gradient(circle at 45% 40%, #1f6e9c, #0a2c53 55%, #03152e 72%);
+            box-shadow: 0 0 80px rgba(63, 179, 255, 0.38);
+        }
+
+        .satellite-card::before {
+            content: "";
+            position: absolute;
+            width: 470px;
+            height: 160px;
+            border: 2px solid rgba(93, 207, 255, 0.65);
+            border-radius: 50%;
+            transform: rotate(-25deg);
+        }
+
+        .satellite-card::after {
+            content: "🛰️";
+            font-size: 120px;
+            position: absolute;
+            filter: drop-shadow(0 0 15px #61d5ff);
+        }
+
+        .orbit-label {
+            position: absolute;
+            bottom: 32px;
+            font-size: 13px;
+            color: #bde9ff;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 9px 14px;
+            border-radius: 20px;
+        }
+
+        .stats {
+            position: absolute;
+            z-index: 3;
+            bottom: 25px;
+            left: 10%;
+            right: 10%;
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+        }
+
+        .stat-box {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid rgba(114, 214, 255, 0.25);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(8px);
+        }
+
+        .stat-box h3 {
+            color: #49d8aa;
+            margin-bottom: 5px;
+        }
+
+        .stat-box p {
+            color: #c8d9eb;
+            font-size: 12px;
+        }
+
+        @media (max-width: 850px) {
+            body {
+                overflow-y: auto;
+            }
+
+            .hero {
+                grid-template-columns: 1fr;
+                text-align: center;
+                padding: 25px 8% 170px;
+            }
+
+            .hero-left p {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .btn-group {
+                justify-content: center;
+            }
+
+            .hero-left h1 {
+                font-size: 38px;
+            }
+
+            .satellite-card {
+                width: 280px;
+                height: 280px;
+            }
+
+            .satellite-card::before {
+                width: 320px;
+            }
+
+            .satellite-card::after {
+                font-size: 80px;
+            }
+
+            .stats {
+                flex-wrap: wrap;
+            }
+
+            .stat-box {
+                min-width: 30%;
+            }
+
+            .nav-text {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="stars"></div>
+
+    <nav class="navbar">
+        <div class="logo">IRVision <span>AI</span></div>
+        <div class="nav-text">Infrared Satellite Intelligence Platform</div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-left">
+            <h1>Transform Infrared Images into <span>Actionable Insights</span></h1>
+
+            <p>
+                IRVision AI enhances infrared satellite imagery using AI-powered
+                preprocessing, super-resolution, colorization, and semantic analysis.
+            </p>
+
+            <div class="btn-group">
+                <a href="/dashboard/" class="btn primary-btn">Explore Dashboard</a>
+                <a href="/upload/" class="btn secondary-btn">Upload Satellite Image</a>
+            </div>
+        </div>
+
+        <div class="hero-right">
+            <div class="satellite-card">
+                <div class="orbit-label">AI-Powered Remote Sensing</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats">
+        <div class="stat-box">
+            <h3>AI Enhancement</h3>
+            <p>Sharper satellite-image details</p>
+        </div>
+
+        <div class="stat-box">
+            <h3>IR → RGB</h3>
+            <p>Semantic-aware colorization</p>
+        </div>
+
+        <div class="stat-box">
+            <h3>Smart Analysis</h3>
+            <p>Objects, land cover, and insights</p>
+        </div>
+    </section>
+</body>
+</html>

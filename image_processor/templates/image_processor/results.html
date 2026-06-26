@@ -1,0 +1,452 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IRVision AI | Results</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f8fc;
+            color: #172b4d;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            min-height: 100vh;
+            background: linear-gradient(180deg, #061a38, #0a315d);
+            color: white;
+            padding: 28px 18px;
+            position: fixed;
+            left: 0;
+            top: 0;
+        }
+
+        .brand {
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 45px;
+        }
+
+        .brand span {
+            color: #4be0ae;
+        }
+
+        .menu a {
+            display: block;
+            color: #d4e5f8;
+            text-decoration: none;
+            padding: 13px 14px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: rgba(75, 224, 174, 0.18);
+            color: white;
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-left: 240px;
+            width: calc(100% - 240px);
+            padding: 30px;
+        }
+
+        .results-header {
+            margin-bottom: 26px;
+        }
+
+        .results-header h1 {
+            color: #0c3565;
+            font-size: 28px;
+            margin-bottom: 6px;
+        }
+
+        .results-header p {
+            color: #68809a;
+            font-size: 14px;
+        }
+
+        /* Project Information */
+        .result-info {
+            background: white;
+            border: 1px solid #e4edf6;
+            border-radius: 14px;
+            padding: 18px 22px;
+            margin-bottom: 22px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            box-shadow: 0 4px 14px rgba(26, 61, 102, 0.08);
+        }
+
+        .info-box h4 {
+            color: #5d728b;
+            font-size: 12px;
+            margin-bottom: 6px;
+        }
+
+        .info-box p {
+            color: #0c3565;
+            font-size: 15px;
+            font-weight: bold;
+            word-break: break-word;
+        }
+
+        /* Images */
+        .image-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+            margin-bottom: 24px;
+        }
+
+        .image-card {
+            background: white;
+            border: 1px solid #e4edf6;
+            border-radius: 14px;
+            padding: 18px;
+            box-shadow: 0 4px 14px rgba(26, 61, 102, 0.08);
+        }
+
+        .image-card h2 {
+            color: #0c3565;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .image-card p {
+            color: #68809a;
+            font-size: 13px;
+            margin-bottom: 14px;
+            line-height: 1.5;
+        }
+
+        .image-card img {
+            width: 100%;
+            height: 320px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 1px solid #e4edf6;
+            background: #edf4fb;
+        }
+
+        /* Processing Summary */
+        .result-note {
+            background: #eef9f5;
+            border-left: 4px solid #4be0ae;
+            padding: 16px;
+            border-radius: 10px;
+            color: #365b71;
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 22px;
+        }
+
+        /* Workflow */
+        .workflow-box {
+            background: white;
+            border: 1px solid #e4edf6;
+            border-radius: 14px;
+            padding: 22px;
+            margin-bottom: 22px;
+            box-shadow: 0 4px 14px rgba(26, 61, 102, 0.08);
+        }
+
+        .workflow-box h2 {
+            color: #0c3565;
+            font-size: 19px;
+            margin-bottom: 20px;
+        }
+
+        .workflow-steps {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+
+        .workflow-step {
+            min-width: 135px;
+            text-align: center;
+            background: #f5f9fd;
+            border: 1px solid #dce8f4;
+            border-radius: 12px;
+            padding: 14px 8px;
+        }
+
+        .workflow-step span {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: #0c3565;
+            color: white;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .workflow-step p {
+            color: #0c3565;
+            font-size: 13px;
+            font-weight: bold;
+            line-height: 1.4;
+        }
+
+        .workflow-step small {
+            color: #68809a;
+            font-size: 11px;
+            font-weight: normal;
+        }
+
+        .arrow {
+            color: #4be0ae;
+            font-size: 24px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+
+        /* Buttons */
+        .result-actions {
+            display: flex;
+            gap: 14px;
+            margin-bottom: 30px;
+        }
+
+        .primary-btn,
+        .secondary-btn {
+            padding: 13px 18px;
+            border-radius: 9px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .primary-btn {
+            background: #0c3565;
+            color: white;
+        }
+
+        .secondary-btn {
+            background: white;
+            color: #0c3565;
+            border: 1px solid #cdddeb;
+        }
+
+        .primary-btn:hover {
+            background: #08284e;
+        }
+
+        .secondary-btn:hover {
+            background: #edf4fb;
+        }
+
+        /* Responsive */
+        @media (max-width: 950px) {
+            .sidebar {
+                width: 190px;
+            }
+
+            .main-content {
+                margin-left: 190px;
+                width: calc(100% - 190px);
+            }
+
+            .result-info {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 700px) {
+            .sidebar {
+                width: 70px;
+                padding: 22px 10px;
+            }
+
+            .brand {
+                font-size: 0;
+                margin-bottom: 35px;
+            }
+
+            .brand::after {
+                content: "AI";
+                font-size: 20px;
+                color: #4be0ae;
+            }
+
+            .menu a {
+                font-size: 0;
+                text-align: center;
+            }
+
+            .menu a::first-letter {
+                font-size: 18px;
+            }
+
+            .main-content {
+                margin-left: 70px;
+                width: calc(100% - 70px);
+                padding: 20px;
+            }
+
+            .result-info,
+            .image-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .image-card img {
+                height: 260px;
+            }
+
+            .result-actions {
+                flex-direction: column;
+            }
+
+            .primary-btn,
+            .secondary-btn {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="layout">
+
+        <aside class="sidebar">
+            <div class="brand">IRVision <span>AI</span></div>
+
+            <nav class="menu">
+                <a href="/dashboard/">⌂ Dashboard</a>
+                <a href="/upload/">⇧ Upload Image</a>
+                <a class="active" href="#">▣ Results</a>
+                <a href="/">← Home</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+
+            <div class="results-header">
+                <h1>Analysis Results</h1>
+                <p>Your Thermal Infrared image has been processed successfully.</p>
+            </div>
+
+            <div class="result-info">
+                <div class="info-box">
+                    <h4>PROJECT NAME</h4>
+                    <p>{{ project_name }}</p>
+                </div>
+
+                <div class="info-box">
+                    <h4>SATELLITE / SOURCE</h4>
+                    <p>{{ satellite }}</p>
+                </div>
+
+                <div class="info-box">
+                    <h4>BAND TYPE</h4>
+                    <p>{{ band_type }}</p>
+                </div>
+
+                <div class="info-box">
+                    <h4>LOCATION</h4>
+                    <p>{{ location }}</p>
+                </div>
+            </div>
+
+            <div class="image-grid">
+
+                <div class="image-card">
+                    <h2>Original TIR Image</h2>
+                    <p>Uploaded Thermal Infrared satellite image before preprocessing.</p>
+                    <img src="{{ original_image }}" alt="Original TIR image">
+                </div>
+
+                <div class="image-card">
+                    <h2>Super-Resolved & Colorized TIR Output</h2>
+                    <p>Baseline output using enhancement, sharpening and semantic-aware pseudo-color visualization.</p>
+                    <img src="{{ enhanced_image }}" alt="Enhanced and colorized TIR output">
+                </div>
+
+            </div>
+
+            <div class="result-note">
+                <strong>Processing Summary:</strong><br>
+                This baseline prototype enhances the uploaded Thermal Infrared (TIR) image using
+                contrast improvement, detail sharpening and semantic-aware pseudo-color visualization.
+                The final IRVision AI pipeline will integrate learned super-resolution and AI-based
+                RGB colorization using paired Landsat TIR–RGB satellite imagery.
+            </div>
+
+            <div class="workflow-box">
+                <h2>IRVision AI Workflow</h2>
+
+                <div class="workflow-steps">
+                    <div class="workflow-step">
+                        <span>1</span>
+                        <p>TIR Band 10 Input<br><small>200 m resolution</small></p>
+                    </div>
+
+                    <div class="arrow">→</div>
+
+                    <div class="workflow-step">
+                        <span>2</span>
+                        <p>Preprocessing<br><small>CLAHE + sharpening</small></p>
+                    </div>
+
+                    <div class="arrow">→</div>
+
+                    <div class="workflow-step">
+                        <span>3</span>
+                        <p>Super-Resolution<br><small>Target: 100 m</small></p>
+                    </div>
+
+                    <div class="arrow">→</div>
+
+                    <div class="workflow-step">
+                        <span>4</span>
+                        <p>AI Colorization<br><small>RGB-like output</small></p>
+                    </div>
+
+                    <div class="arrow">→</div>
+
+                    <div class="workflow-step">
+                        <span>5</span>
+                        <p>Evaluation<br><small>PSNR, SSIM, FID</small></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="result-actions">
+                <a href="/upload/" class="primary-btn">⇧ Upload Another Image</a>
+                <a href="/dashboard/" class="secondary-btn">← Back to Dashboard</a>
+            </div>
+
+        </main>
+
+    </div>
+
+</body>
+</html>

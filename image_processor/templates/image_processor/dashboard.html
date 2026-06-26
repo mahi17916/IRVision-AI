@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IRVision AI | Dashboard</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f5f8fc;
+            color: #172b4d;
+        }
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 240px;
+            min-height: 100vh;
+            background: linear-gradient(180deg, #061a38, #0a315d);
+            color: white;
+            padding: 28px 18px;
+        }
+
+        .brand {
+            font-size: 25px;
+            font-weight: bold;
+            margin-bottom: 45px;
+        }
+
+        .brand span {
+            color: #4be0ae;
+        }
+
+        .menu a {
+            display: block;
+            color: #d4e5f8;
+            text-decoration: none;
+            padding: 13px 14px;
+            margin-bottom: 8px;
+            border-radius: 8px;
+            font-size: 15px;
+        }
+
+        .menu a:hover,
+        .menu a.active {
+            background: rgba(75, 224, 174, 0.18);
+            color: white;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .topbar h1 {
+            font-size: 28px;
+            color: #0c3565;
+        }
+
+        .topbar p {
+            color: #68809a;
+            margin-top: 6px;
+            font-size: 14px;
+        }
+
+        .profile {
+            background: white;
+            border-radius: 50%;
+            width: 42px;
+            height: 42px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Stats */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 14px;
+            box-shadow: 0 4px 14px rgba(26, 61, 102, 0.08);
+            border: 1px solid #e4edf6;
+        }
+
+        .stat-card h3 {
+            color: #3f6287;
+            font-size: 14px;
+            margin-bottom: 12px;
+        }
+
+        .stat-card h2 {
+            color: #0c3565;
+            font-size: 28px;
+        }
+
+        .stat-card p {
+            color: #5d728b;
+            font-size: 12px;
+            margin-top: 7px;
+        }
+
+        /* Main Panels */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1.4fr 0.8fr;
+            gap: 22px;
+        }
+
+        .panel {
+            background: white;
+            border-radius: 14px;
+            padding: 22px;
+            box-shadow: 0 4px 14px rgba(26, 61, 102, 0.08);
+            border: 1px solid #e4edf6;
+        }
+
+        .panel h2 {
+            font-size: 19px;
+            margin-bottom: 20px;
+            color: #0c3565;
+        }
+
+        .empty-project {
+            text-align: center;
+            padding: 55px 15px;
+            color: #68809a;
+        }
+
+        .empty-icon {
+            font-size: 52px;
+            margin-bottom: 14px;
+        }
+
+        .empty-project h3 {
+            color: #0c3565;
+            margin-bottom: 9px;
+            font-size: 20px;
+        }
+
+        .empty-project p {
+            line-height: 1.5;
+            margin-bottom: 24px;
+            font-size: 14px;
+        }
+
+        .quick-btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 12px;
+            border-radius: 9px;
+            border: 1px solid #dce8f4;
+            background: #f8fbff;
+            text-decoration: none;
+            color: #123b68;
+            font-weight: bold;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+
+        .quick-btn:hover {
+            background: #eaf7ff;
+            transform: translateY(-2px);
+        }
+
+        .first-upload-btn {
+            max-width: 260px;
+            margin: auto;
+            background: #0c3565;
+            color: white;
+            border: none;
+        }
+
+        .first-upload-btn:hover {
+            background: #14518f;
+        }
+
+        .model-box {
+            margin-top: 20px;
+            padding: 16px;
+            border-radius: 10px;
+            background: #eef9f5;
+            border-left: 4px solid #4be0ae;
+        }
+
+        .model-box h3 {
+            font-size: 15px;
+            color: #0c3565;
+            margin-bottom: 7px;
+        }
+
+        .model-box p {
+            font-size: 13px;
+            color: #55708c;
+            line-height: 1.5;
+        }
+
+        .help-box {
+            margin-top: 18px;
+            padding: 15px;
+            border-radius: 10px;
+            background: #f4f9ff;
+            border: 1px solid #dce8f4;
+        }
+
+        .help-box h3 {
+            color: #0c3565;
+            font-size: 15px;
+            margin-bottom: 7px;
+        }
+
+        .help-box p {
+            color: #55708c;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+
+        @media (max-width: 1000px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .layout {
+                display: block;
+            }
+
+            .sidebar {
+                width: 100%;
+                min-height: auto;
+                padding: 18px;
+            }
+
+            .brand {
+                margin-bottom: 18px;
+            }
+
+            .menu {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+
+            .menu a {
+                margin-bottom: 0;
+                padding: 9px 10px;
+                font-size: 12px;
+            }
+
+            .main-content {
+                padding: 20px;
+            }
+
+            .topbar h1 {
+                font-size: 23px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="layout">
+
+        <aside class="sidebar">
+            <div class="brand">IRVision <span>AI</span></div>
+
+            <nav class="menu">
+                <a class="active" href="/dashboard/">⌂ Dashboard</a>
+                <a href="/upload/">⇧ Upload Image</a>
+                <a href="#">◉ Processing</a>
+                <a href="#">▣ Results</a>
+                <a href="#">◔ Analytics</a>
+                <a href="#">◫ Reports</a>
+                <a href="/">← Logout</a>
+            </nav>
+        </aside>
+
+        <main class="main-content">
+
+            <div class="topbar">
+                <div>
+                    <h1>Dashboard Overview</h1>
+                    <p>Welcome to your satellite image intelligence workspace.</p>
+                </div>
+                <div class="profile">👤</div>
+            </div>
+
+            <section class="stats-grid">
+                <div class="stat-card">
+                    <h3>📁 Total Projects</h3>
+                    <h2>{{ total_projects }}</h2>
+                    <p>Total uploaded analysis projects</p>
+                </div>
+
+                <div class="stat-card">
+                    <h3>🖼 Images Processed</h3>
+                    <h2>{{ images_processed }}</h2>
+                    <p>Successfully processed images</p>
+                </div>
+
+                <div class="stat-card">
+                    <h3>◎ Average Accuracy</h3>
+                    <h2>--</h2>
+                    <p>Available after analysis</p>
+                </div>
+
+                <div class="stat-card">
+                    <h3>⌘ Active Models</h3>
+                    <h2>{{ active_models }}</h2>
+                    <p>Image enhancement module active</p>
+                </div>
+            </section>
+
+            <section class="content-grid">
+
+                <div class="panel">
+                    <h2>Recent Projects</h2>
+
+                    {% if recent_projects %}
+
+<table style="width:100%; border-collapse:collapse;">
+    <tr style="border-bottom:1px solid #e4edf6;">
+        <th style="text-align:left; padding:12px 8px; color:#5d728b; font-size:13px;">Project Name</th>
+        <th style="text-align:left; padding:12px 8px; color:#5d728b; font-size:13px;">Date</th>
+        <th style="text-align:left; padding:12px 8px; color:#5d728b; font-size:13px;">Status</th>
+        <th style="text-align:left; padding:12px 8px; color:#5d728b; font-size:13px;">Accuracy</th>
+    </tr>
+
+    {% for project in recent_projects %}
+    <tr style="border-bottom:1px solid #edf2f7;">
+        <td style="padding:14px 8px; font-size:14px;">
+            {{ project.project_name }}
+        </td>
+
+        <td style="padding:14px 8px; font-size:14px;">
+            {{ project.created_at|date:"d M Y" }}
+        </td>
+
+        <td style="padding:14px 8px;">
+            <span style="background:#dff8ed; color:#168a5d; padding:5px 9px; border-radius:12px; font-size:11px; font-weight:bold;">
+                {{ project.status }}
+            </span>
+        </td>
+
+        <td style="padding:14px 8px; font-size:14px;">
+            {{ project.accuracy }}
+        </td>
+    </tr>
+    {% endfor %}
+</table>
+
+{% else %}
+
+<div class="empty-project">
+    <div class="empty-icon">🛰️</div>
+    <h3>No Projects Yet</h3>
+    <p>
+        Upload your first infrared satellite image<br>
+        to begin enhancement and analysis.
+    </p>
+
+    <a class="quick-btn first-upload-btn" href="/upload/">
+        ⇧ Upload First Image
+    </a>
+</div>
+
+{% endif %}
+                </div>
+
+                <div class="panel">
+                    <h2>Get Started</h2>
+
+                    <a class="quick-btn" href="/upload/">⇧ Upload Infrared Image</a>
+                    <a class="quick-btn" href="/upload/">◉ Start New Analysis</a>
+
+                    <div class="model-box">
+                        <h3>✓ System Ready</h3>
+                        <p>
+                            The image enhancement module is ready to process
+                            infrared satellite images.
+                        </p>
+                    </div>
+
+                    <div class="help-box">
+                        <h3>How it works</h3>
+                        <p>
+                            Upload an IR image → Apply enhancement →
+                            View the improved output.
+                        </p>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+</body>
+</html>
